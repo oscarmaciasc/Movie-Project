@@ -1,15 +1,20 @@
 import express from 'express'
-import { User } from '../types/user.type'
+import { User, UserModel } from '../types/user.type'
 import UserService from '../services/user.service'
+import boom from '@hapi/boom'
 
 const router = express.Router()
 const service = new UserService()
 
-router.post('/', async (req, res) => {
-    const user: User = req.body
-    const newUser = await service.create(user)
-
-    res.status(201).json(newUser)
+router.post('/', async (req, res, next) => {
+    try {
+        const user: User = req.body
+        const newUser = await service.create(user)
+    
+        res.status(201).json({ user: newUser.toClient() })
+    } catch (error) {
+        next(error)
+    }
 })
 
 router.get('/', async (req, res, next) => {

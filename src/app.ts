@@ -7,20 +7,21 @@ import {
 } from './middlewares/error.handler'
 import routerApi from './routes'
 import { config } from './config/config'
-import bodyParser from "body-parser"
+import passport from 'passport'
+import './utils/auth'
+// import bodyParser from "body-parser"
 
 
 const { mongoUri, port } = config
 
 const app = express()
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.json())
 
 const connectDB = () => {
   mongoose.connect(mongoUri)
 }
 
-app.use(express.json())
+app.use(passport.initialize())
 routerApi(app)
 
 app.listen(port, () => {

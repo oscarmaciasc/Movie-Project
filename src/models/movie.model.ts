@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { Movie, MovieModel } from '../types/movie.type'
 
+export const MOVIE_REFERENCE = 'Movie'
+
 const Movies = new Schema<Movie, MovieModel>({
   name: {
     type: String,
@@ -30,4 +32,4 @@ const Movies = new Schema<Movie, MovieModel>({
   }
 })
 
-export default model('Movie', Movies)
+export default model(MOVIE_REFERENCE, Movies)

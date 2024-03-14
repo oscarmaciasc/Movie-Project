@@ -58,6 +58,19 @@ class MovieService {
 
     return movie
   }
+
+  async findByFilter(filter: Partial<Movie>) {
+    try {
+      const movies = await Movies.find(filter);
+      if (!movies.length) {
+        throw boom.notFound('No movies found with the given filter');
+      }
+      return movies;
+    } catch (error) {
+      console.error('Error while connecting to the DB', error);
+      throw boom.badImplementation('Error while connecting to the DB');
+    }
+  }
 }
 
 export default MovieService

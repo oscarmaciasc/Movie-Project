@@ -48,4 +48,23 @@ router.get('/findMovieDirector', async(req, res, next) => {
     }
 })
 
+router.get('/filter', async (req, res, next) => {
+    try {
+      const { name, releaseDate, director, description } = req.query;
+  
+      const filter: Partial<Movie> = {};
+      if (name) filter.name = name.toString();
+      if (releaseDate) filter.releaseDate = new Date(releaseDate.toString());
+      if (director) filter.director = director.toString();
+      if (description) filter.description = description.toString();
+  
+      const movies = await service.findByFilter(filter);
+  
+      res.json(movies);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
 export default router
